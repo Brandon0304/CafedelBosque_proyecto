@@ -3,30 +3,83 @@ package com.restaurante.gestionEmpleados.service;
 import com.restaurante.gestionEmpleados.model.Empleado;
 import com.restaurante.gestionEmpleados.repository.EmpleadoRepository;
 import com.restaurante.gestionPedidos.model.Pedido;
-import com.restaurante.patrones.chainofresponsibility.ManejadorAdmin;
-import com.restaurante.patrones.chainofresponsibility.ManejadorCocinero;
-import com.restaurante.patrones.chainofresponsibility.ManejadorMesero;
-import com.restaurante.patrones.chainofresponsibility.ManejadorPedido;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
- * Service refactorizado con patrón: Chain of Responsibility
+ * Service refactorizado con patrón Chain of Responsibility integrado directamente
  */
 @Service
 public class EmpleadoService {
 
     private final EmpleadoRepository repo;
     
-    // Chain of Responsibility - Cadena de manejadores por rol
-    private final ManejadorPedido chainOfResponsibility;
+    // ========== PATRÓN CHAIN OF RESPONSIBILITY ==========
+    // Chain of Responsibility Pattern - Cadena de manejadores por rol de empleado
+    private final ManejadorPedido manejadorPrincipal;
 
     public EmpleadoService(EmpleadoRepository repo) {
         this.repo = repo;
-        // Configurar Chain of Responsibility
-        this.chainOfResponsibility = configurarChain();
+        // Configurar Chain of Responsibility integrado
+        this.manejadorPrincipal = configurarChain();
+    }
+
+    // Chain of Responsibility Pattern - Interfaz base del manejador (Handler abstracto)
+    private abstract static class ManejadorPedido {
+        protected ManejadorPedido siguiente;
+
+        public void establecerSiguiente(ManejadorPedido siguiente) {
+            this.siguiente = siguiente;
+        }
+
+        public abstract void manejar(Pedido pedido, String rol);
+
+        protected void pasarASiguiente(Pedido pedido, String rol) {
+            if (siguiente != null) {
+                siguiente.manejar(pedido, rol);
+            }
+        }
+    }
+
+    // Chain of Responsibility - Manejador concreto: Cocinero
+    private static class ManejadorCocinero extends ManejadorPedido {
+        @Override
+        public void manejar(Pedido pedido, String rol) {
+            if ("COCINERO".equalsIgnoreCase(rol) || "BARISTA".equalsIgnoreCase(rol)) {
+                System.out.println("👨‍🍳 Cocinero: Procesando pedido #" + pedido.getId());
+                System.out.println("   Preparando " + pedido.getDetalles().size() + " item(s)...");
+            } else {
+                pasarASiguiente(pedido, rol);
+            }
+        }
+    }
+
+    // Chain of Responsibility - Manejador concreto: Mesero
+    private static class ManejadorMesero extends ManejadorPedido {
+        @Override
+        public void manejar(Pedido pedido, String rol) {
+            if ("MESERO".equalsIgnoreCase(rol)) {
+                System.out.println("👤 Mesero: Atendiendo pedido #" + pedido.getId());
+                System.out.println("   Cliente: " + pedido.getNombreCliente());
+                System.out.println("   Total: $" + pedido.getTotal());
+            } else {
+                pasarASiguiente(pedido, rol);
+            }
+        }
+    }
+
+    // Chain of Responsibility - Manejador concreto: Admin (fallback)
+    private static class ManejadorAdmin extends ManejadorPedido {
+        @Override
+        public void manejar(Pedido pedido, String rol) {
+            if ("ADMIN".equalsIgnoreCase(rol)) {
+                System.out.println("👔 Admin: Revisando pedido #" + pedido.getId());
+            } else {
+                System.out.println("⚠️ Rol '" + rol + "' no tiene manejador asignado");
+            }
+        }
     }
 
     private ManejadorPedido configurarChain() {
@@ -48,16 +101,16 @@ public class EmpleadoService {
         return repo.findById(id);
     }
 
-    // Chain of Responsibility - Manejar pedido según rol del empleado
+    // Chain of Responsibility Pattern - Manejar pedido según rol del empleado
     public void manejarPedidoPorRol(Pedido pedido, String rol) {
-        chainOfResponsibility.manejar(pedido, rol);
+        manejadorPrincipal.manejar(pedido, rol);
     }
 
-    // Chain of Responsibility - Manejar pedido usando ID de empleado
+    // Chain of Responsibility Pattern - Manejar pedido usando ID de empleado
     public void manejarPedidoPorEmpleado(Long idEmpleado, Pedido pedido) {
         Empleado empleado = repo.findById(idEmpleado)
                 .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
-        chainOfResponsibility.manejar(pedido, empleado.getRol());
+        manejadorPrincipal.manejar(pedido, empleado.getRol());
     }
 
     public List<Empleado> buscarPorRol(String rol) {

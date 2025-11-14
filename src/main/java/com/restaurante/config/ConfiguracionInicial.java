@@ -6,22 +6,51 @@ import com.restaurante.gestionInventario.model.InventarioItem;
 import com.restaurante.gestionInventario.repository.InventarioRepository;
 import com.restaurante.gestionProductos.model.Producto;
 import com.restaurante.gestionProductos.repository.ProductoRepository;
-import com.restaurante.patrones.singleton.GestorConfiguracion;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.math.BigDecimal;
 
+/**
+ * Configuración inicial con patrón Singleton integrado
+ */
 @Configuration
 public class ConfiguracionInicial {
+
+    // ========== PATRÓN SINGLETON ==========
+    // Singleton Pattern - Configuración única del restaurante (una sola instancia)
+    private static class GestorConfiguracion {
+        private static GestorConfiguracion instancia;
+        private String nombreRestaurante = "Café del Bosque";
+        private String telefono = "+57 300 123 4567";
+        private String direccion = "Calle Principal #123";
+
+        private GestorConfiguracion() {} // Constructor privado para evitar instancias externas
+
+        // Singleton Pattern - Obtener única instancia (thread-safe)
+        public static synchronized GestorConfiguracion obtenerInstancia() {
+            if (instancia == null) {
+                instancia = new GestorConfiguracion();
+            }
+            return instancia;
+        }
+
+        public void mostrarConfiguracion() {
+            System.out.println("\n=== CONFIGURACIÓN DEL RESTAURANTE (Singleton) ===");
+            System.out.println("Nombre: " + nombreRestaurante);
+            System.out.println("Teléfono: " + telefono);
+            System.out.println("Dirección: " + direccion);
+            System.out.println("=====================================\n");
+        }
+    }
 
     @Bean
     CommandLineRunner initData(ProductoRepository productoRepo,
                                InventarioRepository inventarioRepo,
                                EmpleadoRepository empleadoRepo) {
         return args -> {
-            // Singleton - Mostrar configuración única del restaurante
+            // Singleton Pattern - Mostrar configuración única del restaurante
             GestorConfiguracion config = GestorConfiguracion.obtenerInstancia();
             config.mostrarConfiguracion();
             
