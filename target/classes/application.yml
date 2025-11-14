@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3307/cafedelBosque_db
+    username: root
+    password: brandon123
+    driver-class-name: org.mariadb.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MariaDBDialect
+
+server:
+  port: 8080
+
+# Prefijo opcional para las APIs
+app:
+  api-prefix: /api/v1
+

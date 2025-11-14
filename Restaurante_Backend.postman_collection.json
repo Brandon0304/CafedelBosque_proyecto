@@ -1,0 +1,622 @@
+{
+	"info": {
+		"_postman_id": "restaurante-backend-collection",
+		"name": "Restaurante Backend API",
+		"description": "Colección completa para probar todas las APIs del backend del restaurante",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Productos",
+			"item": [
+				{
+					"name": "Listar todos los productos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos"
+							]
+						},
+						"description": "Obtiene todos los productos del catálogo"
+					},
+					"response": []
+				},
+				{
+					"name": "Listar productos disponibles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos/disponibles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos",
+								"disponibles"
+							]
+						},
+						"description": "Obtiene solo los productos que están disponibles"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener producto por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos",
+								"1"
+							]
+						},
+						"description": "Obtiene un producto específico por su ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear producto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Latte\",\n    \"categoria\": \"BEBIDA_CALIENTE\",\n    \"precio\": 7000,\n    \"disponible\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos"
+							]
+						},
+						"description": "Crea un nuevo producto en el catálogo"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar producto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Capuchino Grande\",\n    \"categoria\": \"BEBIDA_CALIENTE\",\n    \"precio\": 7500,\n    \"disponible\": true\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos",
+								"1"
+							]
+						},
+						"description": "Actualiza un producto existente"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar producto",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/productos/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"productos",
+								"1"
+							]
+						},
+						"description": "Elimina un producto del catálogo"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pedidos",
+			"item": [
+				{
+					"name": "Listar todos los pedidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pedidos"
+							]
+						},
+						"description": "Obtiene todos los pedidos registrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombreCliente\": \"Juan Pérez\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pedidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pedidos"
+							]
+						},
+						"description": "Crea un nuevo pedido. Guarda el ID del pedido para agregar productos después."
+					},
+					"response": []
+				},
+				{
+					"name": "Agregar producto a pedido",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idProducto\": \"1\",\n    \"cantidad\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pedidos/1/agregar-producto",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pedidos",
+								"1",
+								"agregar-producto"
+							]
+						},
+						"description": "Agrega un producto a un pedido existente. Reemplaza el ID del pedido en la URL."
+					},
+					"response": []
+				},
+				{
+					"name": "Marcar pedido como pagado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pedidos/1/pagar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pedidos",
+								"1",
+								"pagar"
+							]
+						},
+						"description": "Marca un pedido como pagado"
+					},
+					"response": []
+				},
+				{
+					"name": "Pedidos entre fechas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/pedidos/entre-fechas?desde=2024-01-01T00:00:00&hasta=2024-12-31T23:59:59",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"pedidos",
+								"entre-fechas"
+							],
+							"query": [
+								{
+									"key": "desde",
+									"value": "2024-01-01T00:00:00",
+									"description": "Fecha inicio (ISO format)"
+								},
+								{
+									"key": "hasta",
+									"value": "2024-12-31T23:59:59",
+									"description": "Fecha fin (ISO format)"
+								}
+							]
+						},
+						"description": "Obtiene pedidos entre dos fechas específicas"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Inventario",
+			"item": [
+				{
+					"name": "Listar todo el inventario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventario"
+							]
+						},
+						"description": "Obtiene todos los items del inventario"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener item de inventario por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventario",
+								"1"
+							]
+						},
+						"description": "Obtiene un item específico del inventario"
+					},
+					"response": []
+				},
+				{
+					"name": "Items con bajo stock",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventario/bajo-stock",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventario",
+								"bajo-stock"
+							]
+						},
+						"description": "Obtiene items del inventario que están bajo el stock mínimo"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear item de inventario",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombreInsumo\": \"Azúcar refinada\",\n    \"unidad\": \"kg\",\n    \"stockActual\": 8,\n    \"stockMinimo\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventario",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventario"
+							]
+						},
+						"description": "Crea un nuevo item en el inventario"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar item de inventario",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombreInsumo\": \"Café molido premium\",\n    \"unidad\": \"kg\",\n    \"stockActual\": 15,\n    \"stockMinimo\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventario",
+								"1"
+							]
+						},
+						"description": "Actualiza un item del inventario"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar item de inventario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/inventario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"inventario",
+								"1"
+							]
+						},
+						"description": "Elimina un item del inventario"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Empleados",
+			"item": [
+				{
+					"name": "Listar todos los empleados",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/empleados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"empleados"
+							]
+						},
+						"description": "Obtiene todos los empleados registrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener empleado por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/empleados/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"empleados",
+								"1"
+							]
+						},
+						"description": "Obtiene un empleado específico por su ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Crear empleado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Ana García\",\n    \"rol\": \"ADMIN\",\n    \"salario\": 2000000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/empleados",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"empleados"
+							]
+						},
+						"description": "Crea un nuevo empleado"
+					},
+					"response": []
+				},
+				{
+					"name": "Actualizar empleado",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Laura Barista Especialista\",\n    \"rol\": \"BARISTA\",\n    \"salario\": 1800000\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/empleados/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"empleados",
+								"1"
+							]
+						},
+						"description": "Actualiza los datos de un empleado"
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar empleado",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/empleados/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"empleados",
+								"1"
+							]
+						},
+						"description": "Elimina un empleado del sistema"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api/v1",
+			"type": "string"
+		}
+	]
+}
+
